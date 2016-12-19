@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # Script to write nagios status in csv format for nagios audit
-# @ Arun sekar
+# @ Arun prasath
 
 # Usage: Run generate_nagios.sh
 
