@@ -16,9 +16,9 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.0',
+    version='1.0.5',
 
-    description='Nagios CLI for auditing purposes',
+    description='Nagios CLI utility for auditing purposes.',
     long_description=long_description,
 
     # The project's main homepage.
