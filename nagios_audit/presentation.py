@@ -30,11 +30,26 @@ class Presentation():
 
     def printAll(self):
         print self.title_head
-        print "printALl:",len(self.host_status_list)
         for host_status in self.host_status_list:
             print host_status
         for service_status in self.service_status_list:
             print service_status
+
+    def writeToFile(self, output_file):
+        try:
+            fo = open(output_file, "w")
+            fo.write(self.title_head)
+            fo.write("\n")
+            for host_status in self.host_status_list:
+                fo.write(host_status)
+                fo.write("\n")
+            for service_status in self.service_status_list:
+                fo.write(service_status)
+                fo.write("\n")
+            fo.close()
+            return True
+        except:
+            return False
 
     def printPrettyTable(self):
         pass

@@ -16,7 +16,7 @@ def checkFile(PATH):
             raise IOError("File not found.")
 
     except IOError,e:
-        print "status.dat file is not found in current location. Please specify a file using '--file' in your command."
+        print "Nagios status file (status.dat) is not found in current or specified location. Please specify a file using '--input_file' in your command."
         exit()
 
 def getDate(epoch):
