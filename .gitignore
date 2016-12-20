@@ -1,3 +1,4 @@
 status.dat
 *.pyc
 nagios_audit.egg-info/
+dist
