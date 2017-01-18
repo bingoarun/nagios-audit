@@ -9,6 +9,7 @@ import datetime
 import os.path
 
 def checkFile(PATH):
+    """Check existence of a file."""
     try:
         if os.path.isfile(PATH):
             return True
@@ -20,12 +21,14 @@ def checkFile(PATH):
         exit()
 
 def getDate(epoch):
+    """Returns date from epoch."""
     if epoch != None:
         epoch = int(epoch)
         return datetime.datetime.fromtimestamp(epoch).strftime('%c')
     return None
 
 def parseConf(source):
+    """Function to parse the Nagios status.dat file and return nested list of objects"""
     conf = {}
     patID=re.compile(r"(?:\s*define)?\s*(\w+)\s+{")
     patAttr=re.compile(r"\s*(\w+)(?:=|\s+)(.*)")
@@ -55,12 +58,14 @@ def parseConf(source):
 #print hostlist
 
 def getServiceDowntime(nagcfg,host,service):
+    """Get downtime of a service for a host."""
     for srv_downtime in nagcfg['servicedowntime']:
         if srv_downtime['host_name'] == host and srv_downtime['service_description'] == service:
             return srv_downtime['start_time'],srv_downtime['end_time'],srv_downtime['duration'],srv_downtime['is_in_effect'],srv_downtime['author'],srv_downtime['comment']
     return None
 
 def getServiceComment(nagcfg,host,service):
+    """Get comments for a service for a host."""
     for srv_comment in nagcfg['servicecomment']:
         if srv_comment['host_name'] == host and srv_comment['service_description'] == service:
             return srv_comment['entry_time'], srv_comment['author'], srv_comment['comment_data']
@@ -68,17 +73,20 @@ def getServiceComment(nagcfg,host,service):
 
 
 def getHostDowntime(nagcfg,host):
+    """Get downtime for a host."""
     for host_downtime in nagcfg['hostdowntime']:
         if host_downtime['host_name'] == host:
             return host_downtime['start_time'],host_downtime['end_time'],host_downtime['duration'],host_downtime['is_in_effect'],host_downtime['author'],host_downtime['comment']
     return None
 
 def getHostComment(nagcfg,host):
+    """Get comments for a host."""
     for host_comment in nagcfg['hostcomment']:
         if host_comment['host_name'] == host:
             return host_comment['entry_time'], host_comment['author'], host_comment['comment_data']
 
 def getNagiosServiceStatus(num):
+    """Returns human readable state of the nagios service state."""
     if num == '0':
         return 'OK'
     elif num == '1':
@@ -92,6 +100,7 @@ def getNagiosServiceStatus(num):
 
 
 def getNagiosHostStatus(num):
+    """Returns human readable state of the nagios host state."""
     if num == '0':
         return "OK"
     elif num == '1':
@@ -100,6 +109,7 @@ def getNagiosHostStatus(num):
         return "UNKNOWN"
 
 def getNagiosObject(PATH):
+    """Returns a nagios object for a provided status.dat file."""
     checkFile(PATH)
     str1 = open(PATH, 'r').read()
     nagcfg=parseConf(str1)
@@ -123,6 +133,7 @@ print ("%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t" % ("Co
                                                                          "DOWNTIME_COMMENT"))
 '''
 def checkIssue(object):
+    """Returns True if there is an issue with the Nagios object."""
     status = False
     if object['current_state'] != '0' or \
                     object['problem_has_been_acknowledged'] != '0' or \
@@ -132,6 +143,7 @@ def checkIssue(object):
     return status
 
 def get_servicestatus_list(nagcfg):
+    """Returns a list of all the services that needs to be actioned."""
     service_status_list = []
     for service in nagcfg['servicestatus']:
         #if service['current_state'] != '0':
@@ -163,6 +175,7 @@ def get_servicestatus_list(nagcfg):
     return service_status_list
 
 def get_hoststatus_list(nagcfg):
+    """Returns a list of all the host that needs to be actioned."""
     host_status_list = []
     for host in nagcfg['hoststatus']:
         #if host['current_state'] != '0' or host['host_name'] in str(nagcfg['hostdowntime']):
