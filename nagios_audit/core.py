@@ -50,6 +50,8 @@ def parseConf(source):
         elif matchEndID and cur:
             conf.setdefault(cur[0],[]).append(cur[1])
             del cur
+    conf.setdefault('hostdowntime')
+    conf.setdefault('servicedowntime')
     return conf
 
 
